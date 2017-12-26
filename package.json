@@ -17,8 +17,9 @@
   },
   "homepage": "https://github.com/liuyics15/auto-ts-doc#readme",
   "dependencies": {
-    "typescript": "^2.6.2",
-    "tslint": "^5.8.0"
+    "rule-ed": "^1.0.4",
+    "tslint": "^5.8.0",
+    "typescript": "^2.6.2"
   },
   "devDependencies": {
     "ts-node": "^3.3.0",

@@ -33,8 +33,9 @@ export interface ITsNode {
     name:string;
     parent:ITsNode;
     note?:INoteNode;
-    viewRef:HTMLElement;
+    viewRef?:HTMLElement;
     viewType:EViewType;
+    children:ITsNode[];
 }
 
 export interface IValueLikeNode extends ITsNode {

@@ -1,4 +1,6 @@
 
+import {EViewType, INodeRender, ITsNode} from "../../interface/Interface";
+
 abstract class RenderBase implements INodeRender {
 
     nodeType:EViewType;
