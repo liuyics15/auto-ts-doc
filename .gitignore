@@ -57,3 +57,8 @@ typings/
 # dotenv environment variables file
 .env
 
+# 忽略package-lock
+package-lock.json
+
+# 忽略webStrom
+.idea/
