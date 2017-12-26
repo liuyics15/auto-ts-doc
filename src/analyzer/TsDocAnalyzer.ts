@@ -18,10 +18,15 @@ export class Analyzer implements IDocAnalyzer {
      * external
      * */
     readSource(filePath:string):ITsDoc {
-        this._originDoc = createOriginDoc(filePath);
-        this.readTrees();
-        this.createRef();
-        return this._convertedDoc;
+        try {
+            this._originDoc = createOriginDoc(filePath);
+            this.readTrees();
+            this.createRef();
+            return this._convertedDoc;
+        } catch (err) {
+            console.error(err);
+            return null;
+        }
     }
 
     /**
@@ -52,6 +57,9 @@ function createOriginDoc(file:string):ts.SourceFile {
     let fileName:string = pathVec.pop();
     //读源文件
     let source:string = ts.sys.readFile(file,"utf8");
+    if(!source) {
+        throw new Error(`文件路径错误或文件内容为空！ ${file}`);
+    }
     //生成-->返回语法书
     return ts.createSourceFile(fileName,source,ts.ScriptTarget.Latest);
 }
@@ -115,7 +123,10 @@ function createNode(node:any):ITsNode {
 
 //创建【模块】节点
 function createModuleNode(origin:ts.ModuleDeclaration):IModuleNode {
-    return null;
+    let back:IModuleNode = {
+
+    };
+    return back;
 }
 
 //创建【类型】节点

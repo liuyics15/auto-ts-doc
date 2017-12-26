@@ -38,6 +38,16 @@ export interface ITsNode {
     children:ITsNode[];
 }
 
+//新建 - 基础节点
+export function newNode():ITsNode {
+    return {
+        name:"",
+        parent:null,
+        children:[],
+        viewType:0
+    };
+}
+
 export interface IValueLikeNode extends ITsNode {
     value:number|string|ITsNode;
     viewType:EViewType.VALUE|EViewType.TYPE|EViewType.STATEMENT|EViewType.PROPERTY|EViewType.VARIABLE|EViewType.SIGNATURE;
@@ -52,16 +62,39 @@ export interface INoteNode extends ITsNode {
     viewType:EViewType.NOTE;
 }
 
+//新建 - 注释节点
+export function newNote():INoteNode {
+    let back = newNode();
+    back.elements = [];
+    back.viewType = EViewType.NOTE;
+    return back;
+}
+
 //价值节点
 export interface IValueNode extends IValueLikeNode {
     value:string|ITsNode;
     viewType:EViewType.VALUE;
 }
 
+//新建 - 价值节点
+export function newValueNode():IValueNode {
+    let back = newNode();
+    back.value = null;
+    back.viewType = EViewType.VALUE;
+    return back;
+}
+
 //类型节点
 export interface ITypeNode extends IValueLikeNode {
     value:"string"|"number"|"void"|"any"|ITsNode;
     viewType:EViewType.TYPE;
+}
+
+//新建 - 类型节点
+export function newTypeNode():ITypeNode {
+    let back = newValueNode();
+    back.viewType = EViewType.TYPE;
+    return back;
 }
 
 export interface IStatementLikeNode extends IValueLikeNode {
@@ -72,6 +105,13 @@ export interface IStatementLikeNode extends IValueLikeNode {
 //类型+价值节点
 export interface IStatementNode extends IStatementLikeNode {
     viewType:EViewType.STATEMENT;
+}
+
+//新建 - 类型+价值节点
+export function newStatementNode():IStatementNode {
+    let back = newValueNode();
+    back.viewType = EViewType.STATEMENT;
+    return back;
 }
 
 //标记节点
@@ -104,11 +144,32 @@ export interface IModuleNode extends ITsNode {
     viewType:EViewType.MODULE|EViewType.FILE;
 }
 
+//新建 - 模块节点
+export function newModuleNode():IModuleNode {
+    let back = newNode();
+    back.interfaces = [];
+    back.enums = [];
+    back.classes = [];
+    back.variables = [];
+    back.functions = [];
+    back.types = [];
+    back.viewType = EViewType.MODULE;
+    return back;
+}
+
 //类节点
 export interface IClassNode extends IInterfaceLikeNode {
     extends:IClassNode[];
     implement:null|IInterfaceNode;
     viewType:EViewType.CLASS;
+}
+
+//新建 - 类节点
+export function newClassNode():IClassNode {
+    let back = newInterfaceNode();
+    back.implement = null;
+    back.viewType = EViewType.CLASS;
+    return back;
 }
 
 //变量节点
@@ -117,11 +178,28 @@ export interface IVariableNode extends IStatementLikeNode {
     viewType:EViewType.VARIABLE;
 }
 
+//新建 - 变量节点
+export function newVariableNode():IVariableNode {
+    let back = newStatementNode();
+    back.declareType = "let";
+    back.viewType = EViewType.VARIABLE;
+    return back;
+}
+
 //函数节点
 export interface IFunctionNode extends ITsNode {
     params:IStatementNode[];
     return:ITypeNode;
     viewType:EViewType.FUNCTION;
+}
+
+//新建 - 函数节点
+export function newFunctionNode():IFunctionNode {
+    let back = newNode();
+    back.params = [];
+    back.return = null;
+    back.viewType = EViewType.FUNCTION;
+    return back;
 }
 
 export interface IInterfaceLikeNode extends ITsNode {
@@ -136,6 +214,16 @@ export interface IInterfaceNode extends IInterfaceLikeNode {
     viewType:EViewType.INTERFACE
 }
 
+//新建 - 接口节点
+export function newInterfaceNode():IInterfaceNode {
+    let back = newNode();
+    back.methods = [];
+    back.properties = [];
+    back.extends = [];
+    back.viewType = EViewType.INTERFACE
+    return back;
+}
+
 //成员访问类型
 export interface IAccessType extends IValueNode {
     value:"public"|"private"|"protected";
@@ -147,10 +235,26 @@ export interface IPropertyNode extends IStatementLikeNode {
     viewType:EViewType.PROPERTY;
 }
 
+//新建 - 属性节点
+export function newPropertyNode():IPropertyNode {
+    let back = newStatementNode();
+    back.accessType = null;
+    back.viewType = EViewType.PROPERTY;
+    return back;
+}
+
 //方法节点
 export interface IMethodNode extends IFunctionNode {
     accessType:IAccessType;
     viewType:EViewType.FUNCTION;
+}
+
+//新建 - 方法节点
+export function newMethodNode():IMethodNode {
+    let back = newFunctionNode();
+    back.accessType = null;
+    back.viewType = EViewType.METHOD;
+    return back;
 }
 
 //枚举节点
